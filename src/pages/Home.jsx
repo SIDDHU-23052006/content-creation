@@ -163,6 +163,14 @@ const [batchRunning, setBatchRunning] = useState(false);
 
   const [selectedType, setSelectedType] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [user, setUser] = useState({ username: "Guest" });
+
+  useEffect(() => {
+    const savedUser = localStorage.getItem("user");
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
+    }
+  }, []);
 
   const [messages, setMessages] = useState([]);
   /* ===== CHAT AUTO SCROLL ===== */
@@ -492,7 +500,7 @@ if (checkingAuth) {
     <span className="advanced-text">{typedText}</span>
   ) : (
     <>
-      Hi Siddhu! <br />I’m your creative partner.
+      Hi {user.username.split(' ')[0]}! <br />I’m your creative partner.
     </>
   )}
 </h1>

@@ -34,6 +34,15 @@ const [history, setHistory] = useState(getHistory());
 const [renameValue, setRenameValue] = useState("");
 const renameInputRef = useRef(null);
 
+const [user, setUser] = useState({ username: "Guest", email: "" });
+
+useEffect(() => {
+  const savedUser = localStorage.getItem("user");
+  if (savedUser) {
+    setUser(JSON.parse(savedUser));
+  }
+}, []);
+
 useEffect(() => {
   if (renamingId && renameInputRef.current) {
     renameInputRef.current.focus();
@@ -389,14 +398,14 @@ useEffect(() => {
           onMouseLeave={() => setShowMenu(false)}
         >
           <div className={`flex items-center ${isOpen ? "gap-3" : "justify-center"}`}>
-            <div className="w-9 h-9 rounded-full bg-purple-600 text-white flex items-center justify-center font-semibold">
-              S
+            <div className="w-9 h-9 rounded-full bg-purple-600 text-white flex items-center justify-center font-semibold uppercase">
+              {user.username.charAt(0)}
             </div>
 
             {isOpen && (
-              <div>
-                <p className="text-sm font-medium">Siddharth</p>
-                <p className="text-xs opacity-60">siddharthb7009@gmail.com</p>
+              <div className="overflow-hidden">
+                <p className="text-sm font-medium truncate">{user.username}</p>
+                <p className="text-xs opacity-60 truncate">{user.email}</p>
               </div>
             )}
           </div>

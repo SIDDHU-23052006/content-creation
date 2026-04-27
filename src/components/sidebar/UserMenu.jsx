@@ -1,21 +1,30 @@
 import { LogOut, User, LayoutDashboard } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 export default function UserMenu({ isOpen }) {
   const navigate = useNavigate();
+  const [user, setUser] = useState({ username: "Guest", email: "" });
+
+  useEffect(() => {
+    const savedUser = localStorage.getItem("user");
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
+    }
+  }, []);
 
   return (
     <div className="relative group">
       <div className="flex items-center gap-3 cursor-pointer">
-        <div className="w-9 h-9 rounded-full bg-purple-600 text-white flex items-center justify-center">
-          S
+        <div className="w-9 h-9 rounded-full bg-purple-600 text-white flex items-center justify-center font-semibold uppercase">
+          {user.username.charAt(0)}
         </div>
 
         {isOpen && (
-          <div>
-            <p className="text-sm font-medium">Siddharth</p>
-            <p className="text-xs text-gray-500">
-              siddharthb7009@gmail.com
+          <div className="overflow-hidden">
+            <p className="text-sm font-medium truncate">{user.username}</p>
+            <p className="text-xs text-gray-500 truncate">
+              {user.email}
             </p>
           </div>
         )}
