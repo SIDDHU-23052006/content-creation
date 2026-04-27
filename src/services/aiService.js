@@ -113,14 +113,15 @@ async function callOpenAI(prompt) {
       "Content-Type": "application/json",
       Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
     },
-    body: JSON.stringify({
+      body: JSON.stringify({
       model: "gpt-3.5-turbo",
       messages: [
-        { role: "system", content: "You are a professional AI content assistant." },
+        { role: "system", content: "You are an expert AI content creator. Your outputs must be highly accurate, relatable, and strictly follow the user's instructions without unnecessary conversational filler." },
         { role: "user", content: prompt },
       ],
-      temperature: 0.7,
-      max_tokens: 800,
+      temperature: 0.3,
+      top_p: 0.8,
+      max_tokens: 1500,
     }),
   });
 
@@ -137,6 +138,10 @@ async function callGemini(prompt) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: {
+          temperature: 0.3,
+          topP: 0.8,
+        }
       }),
     }
   );
@@ -155,7 +160,14 @@ async function callMistral(prompt) {
         "Content-Type": "application/json",
         Authorization: `Bearer ${import.meta.env.VITE_HF_API_KEY}`,
       },
-      body: JSON.stringify({ inputs: prompt }),
+      body: JSON.stringify({ 
+        inputs: prompt,
+        parameters: {
+          temperature: 0.3,
+          top_p: 0.8,
+          max_new_tokens: 1500
+        }
+      }),
     }
   );
 
